@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">番茄钟</string>
+    <string-array name="pomodoro_durations">
+        <item>25</item>
+        <item>40</item>
+        <item>60</item>
+        <item>80</item>
+    </string-array>
+    <string name="tasks">待办事项</string>
+    <string name="pomodoro">番茄钟</string>
+    <string name="profile">个人中心</string>
+</resources>
