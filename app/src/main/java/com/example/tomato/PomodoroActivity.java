@@ -18,7 +18,7 @@ public class PomodoroActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_poromodo);
+        setContentView(R.layout.activity_pomodoro);
 
         timerTextView = findViewById(R.id.timerTextView);
         durationSpinner = findViewById(R.id.durationSpinner);
