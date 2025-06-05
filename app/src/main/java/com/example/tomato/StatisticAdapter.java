@@ -6,7 +6,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 
 public class StatisticAdapter extends RecyclerView.Adapter<StatisticAdapter.StatisticViewHolder> {
     private List<Statistic> statistics;
@@ -28,7 +31,10 @@ public class StatisticAdapter extends RecyclerView.Adapter<StatisticAdapter.Stat
         Statistic statistic = statistics.get(position);
         holder.nameTextView.setText(statistic.name);
         holder.durationTextView.setText(statistic.duration + " 分钟");
+        holder.typeTextView.setText(statistic.type);
 
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        holder.dateTextView.setText(sdf.format(statistic.date));
         // 动态设置内容描述
         holder.itemView.setContentDescription(
                 "统计项：" + statistic.name + "，用时：" + statistic.duration + "分钟"
@@ -41,13 +47,14 @@ public class StatisticAdapter extends RecyclerView.Adapter<StatisticAdapter.Stat
     }
 
     static class StatisticViewHolder extends RecyclerView.ViewHolder {
-        TextView nameTextView, durationTextView, typeTextView;
+        TextView nameTextView, durationTextView, typeTextView,dateTextView;
 
         public StatisticViewHolder(@NonNull View itemView) {
             super(itemView);
             nameTextView = itemView.findViewById(R.id.nameTextView);
             durationTextView = itemView.findViewById(R.id.durationTextView);
             typeTextView = itemView.findViewById(R.id.typeTextView);
+            dateTextView = itemView.findViewById(R.id.dateTextView);
         }
     }
 }

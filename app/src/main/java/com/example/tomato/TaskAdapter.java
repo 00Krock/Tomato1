@@ -44,14 +44,19 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
             new AsyncTask<Task, Void, Void>() {
                 @Override
                 protected Void doInBackground(Task... tasks) {
-                    db.taskDao().deleteTask(tasks[0]);
+
+                    tasks[0].isCompleted = true;
+                    db.taskDao().updateTask(tasks[0]);
                     return null;
                 }
 
                 @Override
                 protected void onPostExecute(Void aVoid) {
                     tasks.remove(position);
-                    notifyDataSetChanged();
+                    notifyItemRemoved(position);
+                    notifyItemRangeChanged(position,tasks.size());
+                    if(activity!=null){
+                            activity.loadTasks();}
                 }
             }.execute(task);
         });

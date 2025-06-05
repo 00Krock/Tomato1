@@ -8,10 +8,10 @@ public class Statistic {
     public String type; // "TASK" or "POMODORO"
     public Date date;
 
-    public Statistic(String name, long duration, String type) {
+    public Statistic(String name, long duration, String type,Date date) {
         this.name = name;
         this.duration = duration;
         this.type = type;
-        this.date = new Date();
+        this.date = date;
     }
 }

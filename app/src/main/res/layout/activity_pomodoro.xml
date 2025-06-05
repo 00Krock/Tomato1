@@ -5,21 +5,46 @@
     android:orientation="vertical"
     android:padding="16dp">
 
-    <TextView
-        android:id="@+id/timerTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="32dp"
-        android:text="25:00"
-        android:textSize="48sp"/>
-
-    <Spinner
-        android:id="@+id/durationSpinner"
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_marginTop="32dp"/>
+        android:layout_height="wrap_content"
+        android:hint="任务名称">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/taskNameEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </com.google.android.material.textfield.TextInputLayout>
 
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="16dp">
+
+        <Button
+            android:id="@+id/btnDecreaseTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="-5分钟"/>
+
+        <TextView
+            android:id="@+id/timerTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="25:00"
+            android:textSize="48sp"/>
+
+        <Button
+            android:id="@+id/btnIncreaseTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="+5分钟"/>
+    </LinearLayout>
+
+    <!-- 保留原有开始/停止按钮 -->
     <Button
         android:id="@+id/startButton"
         android:layout_width="match_parent"
@@ -34,4 +59,12 @@
         android:layout_marginTop="8dp"
         android:text="停止"
         android:enabled="false"/>
-</LinearLayout>
+    <Button
+        android:id="@+id/pauseButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="暂停"
+        android:enabled="false"/>
+    </LinearLayout>
+

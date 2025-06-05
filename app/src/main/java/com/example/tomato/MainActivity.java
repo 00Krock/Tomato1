@@ -1,5 +1,6 @@
 package com.example.tomato;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
@@ -15,7 +16,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.util.ArrayList;
 import java.util.List;
+import android.content.Intent;
+import android.util.Log;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
     private RecyclerView taskRecyclerView;
@@ -26,11 +33,25 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        BottomNavigationView bottomNav = findViewById(R.id.bottomNavigationView);
+        bottomNav.setOnItemSelectedListener(item -> {
+            int id = item.getItemId();
+
+            if (id == R.id.nav_pomodoro) {
+                startActivity(new Intent(this, PomodoroActivity.class));
+                return true;
+            } else if (id == R.id.nav_profile) {
+                startActivity(new Intent(this, ProfileActivity.class));
+                return true;
+            }
+            return false;
+        });
 
         db = AppDatabase.getDatabase(this);
 
         taskRecyclerView = findViewById(R.id.taskRecyclerView);
         taskRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        taskRecyclerView.setAdapter(new TaskAdapter(new ArrayList<>(), this));
 
         FloatingActionButton addButton = findViewById(R.id.addTaskButton);
         addButton.setOnClickListener(v -> {
@@ -41,11 +62,13 @@ public class MainActivity extends AppCompatActivity {
         loadTasks();
     }
 
-    private void loadTasks() {
+
+    @SuppressLint("StaticFieldLeak")
+    public void loadTasks() {
         new AsyncTask<Void, Void, List<Task>>() {
             @Override
             protected List<Task> doInBackground(Void... voids) {
-                return db.taskDao().getAllTasks();
+                return db.taskDao().getIncompleteTasks();
             }
 
             @Override
@@ -56,9 +79,14 @@ public class MainActivity extends AppCompatActivity {
         }.execute();
     }
 
+
     @Override
     protected void onResume() {
         super.onResume();
         loadTasks();
     }
+    public MainActivity() {
+        Log.d("DEBUG", "MainActivity constructed");
+    }
+
 }

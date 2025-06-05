@@ -8,9 +8,9 @@ import java.util.Date;
 @Entity(tableName = "tasks")
 public class Task {
     @PrimaryKey(autoGenerate = true)
-    public int id = 0;
+    public int id ;
 
-    @ColumnInfo(name = "due_date")  // 可选：自定义列名
+    @ColumnInfo(name = "due_date")
     public Date dueDate;
 
     public String title;

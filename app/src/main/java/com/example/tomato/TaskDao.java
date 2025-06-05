@@ -12,6 +12,12 @@ public interface TaskDao {
     @Query("SELECT * FROM tasks ORDER BY due_date ASC")
     List<Task> getAllTasks();
 
+    @Query("SELECT * FROM tasks WHERE isCompleted = 0 ORDER BY due_date ASC")
+    List<Task> getIncompleteTasks();
+
+    @Query("SELECT * FROM tasks WHERE isCompleted = 1 ORDER BY due_date DESC")
+    List<Task> getCompletedTasks();
+
     @Insert
     void insertTask(Task task);
 
