@@ -13,13 +13,14 @@ public class PomodoroActivity extends AppCompatActivity {
     // 视图组件
     private EditText taskNameEditText;
     private TextView timerTextView;
-    private Button btnDecreaseTime, btnIncreaseTime, startButton, stopButton;
+    private Button btnDecreaseTime, btnIncreaseTime, startButton, stopButton,pauseButton;
 
     // 计时相关变量
     private long timeLeftInMillis;
     private int selectedDuration = 25; // 默认25分钟
     private CountDownTimer countDownTimer;
     private boolean timerRunning;
+    private boolean isPaused = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +34,7 @@ public class PomodoroActivity extends AppCompatActivity {
         btnIncreaseTime = findViewById(R.id.btnIncreaseTime);
         startButton = findViewById(R.id.startButton);
         stopButton = findViewById(R.id.stopButton);
+        pauseButton=findViewById(R.id.pauseButton);
 
         // 初始化显示
         updateTimerDisplay();
@@ -42,6 +44,7 @@ public class PomodoroActivity extends AppCompatActivity {
         btnIncreaseTime.setOnClickListener(v -> adjustTime(5));
         startButton.setOnClickListener(v -> startTimer());
         stopButton.setOnClickListener(v -> stopTimer());
+        pauseButton.setOnClickListener(v -> pauseOrResumeTimer());
     }
 
     // 调整时长（单位：分钟）
@@ -91,6 +94,7 @@ public class PomodoroActivity extends AppCompatActivity {
                     timerTextView.setText("00:00");
                     startButton.setEnabled(true);
                     stopButton.setEnabled(false);
+                    pauseButton.setEnabled(false);
                     btnDecreaseTime.setEnabled(true);
                     btnIncreaseTime.setEnabled(true);
 
@@ -107,8 +111,43 @@ public class PomodoroActivity extends AppCompatActivity {
             timerRunning = true;
             startButton.setEnabled(false);
             stopButton.setEnabled(true);
+            pauseButton.setEnabled(true);
             btnDecreaseTime.setEnabled(false);
-            btnIncreaseTime.setEnabled(true);
+            btnIncreaseTime.setEnabled(false);
+        }
+    }
+    private void pauseOrResumeTimer() {
+        if (timerRunning) {
+            if (!isPaused) {
+                // 暂停计时器
+                countDownTimer.cancel();
+                pauseButton.setText("继续");
+                isPaused = true;
+            } else {
+                // 继续计时器
+                countDownTimer = new CountDownTimer(timeLeftInMillis, 1000) {
+                    @Override
+                    public void onTick(long millisUntilFinished) {
+                        timeLeftInMillis = millisUntilFinished;
+                        updateTimerDisplay();
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        timerRunning = false;
+                        isPaused = false;
+                        timerTextView.setText("00:00");
+                        startButton.setEnabled(true);
+                        stopButton.setEnabled(false);
+                        pauseButton.setEnabled(false);
+                        btnDecreaseTime.setEnabled(true);
+                        btnIncreaseTime.setEnabled(true);
+                    }
+                }.start();
+
+                pauseButton.setText("暂停");
+                isPaused = false;
+            }
         }
     }
 
@@ -117,8 +156,10 @@ public class PomodoroActivity extends AppCompatActivity {
         if (timerRunning) {
             countDownTimer.cancel();
             timerRunning = false;
+            isPaused=false;
             startButton.setEnabled(true);
             stopButton.setEnabled(false);
+            pauseButton.setText("暂停");
             btnDecreaseTime.setEnabled(true);
             btnIncreaseTime.setEnabled(true);
         }
